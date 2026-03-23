@@ -2,21 +2,13 @@ name: CI/CD - Student Management System
 
 on:
   push:
-    branches: [ "main" ]
-    paths:
-      - "Student Management System/**"
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
-    paths:
-      - "Student Management System/**"
+    branches: ["main"]
 
 jobs:
   build-test:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: "Student Management System"
 
     steps:
       - name: Checkout code
@@ -32,17 +24,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Install test tools
+        run: pip install pytest
+
       - name: Run tests
         run: |
-          pytest || echo "No tests yet"
+          pytest || echo "No tests found"
 
   deploy:
     needs: build-test
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: "Student Management System"
 
     steps:
       - name: Checkout code
